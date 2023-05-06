@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +32,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the view for this layout
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-
         // Inflate the MapsActivity
         SupportMapFragment mapFragment = new SupportMapFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.map_fragment, mapFragment).commit();
         mapFragment.getMapAsync(this);
-
 
         return view;
     }
