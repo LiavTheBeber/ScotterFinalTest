@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "494189410346",
+    "project_id": "scooterfinaltest",
+    "storage_bucket": "scooterfinaltest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494189410346:android:9908837fbc6fa285b1eb53",
+        "android_client_info": {
+          "package_name": "com.example.scotterfinaltest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494189410346-hatdrra957taskq2dv2s7v8rnajfk2oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIjbxgADfW-x1M-EV4O-ozkOGlrZTNjfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494189410346-hatdrra957taskq2dv2s7v8rnajfk2oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494189410346:android:dc931dacb8a0f4d6b1eb53",
+        "android_client_info": {
+          "package_name": "om.example.scotterfinaltest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494189410346-hatdrra957taskq2dv2s7v8rnajfk2oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIjbxgADfW-x1M-EV4O-ozkOGlrZTNjfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494189410346-hatdrra957taskq2dv2s7v8rnajfk2oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
