@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings Fragment"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:layout_gravity="center_horizontal"/>
 
     <View
@@ -27,8 +27,7 @@
         android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name: FullName"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:background="@drawable/rounded_border"
         android:layout_marginBottom="15dp"/>
 
@@ -36,8 +35,7 @@
         android:id="@+id/tvEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email: email"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:background="@drawable/rounded_border"
         android:layout_marginBottom="15dp"/>
 
@@ -45,8 +43,7 @@
         android:id="@+id/tvMobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Phone: 0549928999"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:background="@drawable/rounded_border"
         android:layout_marginBottom="15dp"/>
 
@@ -54,8 +51,7 @@
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Birthdate: 24/7/2005"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:background="@drawable/rounded_border" />
 
     <View
@@ -74,12 +70,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enable Dark Mode?"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:background="@drawable/rounded_border"/>
 
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/checkBox"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="15dp"/>

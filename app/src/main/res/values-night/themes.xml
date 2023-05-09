@@ -1,7 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ScotterFinalTest" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="android:textColor">@color/text_color_dark</item>
+        <item name="android:colorBackground">@color/background_dark</item>
+        <item name="android:colorForeground">@color/foreground_dark</item>
+        <item name="android:colorAccent">@color/accent_color_dark</item>
     </style>
 </resources>

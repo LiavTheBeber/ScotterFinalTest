@@ -2,4 +2,23 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    // for dark mode
+    <!-- Background color for window -->
+    <item name="background_dark" type="color">#212121</item>
+    <item name="background_light" type="color">#F1F1F1</item>
+
+    <!-- Text color -->
+    <item name="text_color_dark" type="color">#FFFFFF</item>
+    <item name="text_color_light" type="color">#212121</item>
+
+    <!-- Color for background views -->
+    <item name="colorBackground" type="color">#212121</item>
+
+    <!-- Color for foreground views -->
+    <item name="foreground_dark" type="color">#FFFFFF</item>
+
+    <!-- Accent color -->
+    <item name="accent_color_dark" type="color">#FF4081</item>
+    <item name="accent_color_light" type="color">#FF4081</item>
 </resources>

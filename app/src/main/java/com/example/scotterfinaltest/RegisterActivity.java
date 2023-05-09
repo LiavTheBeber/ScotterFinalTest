@@ -99,6 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         userMap.put(KEY_MOBILE,etRegMobile.getText().toString());
                                         userMap.put(KEY_EMAIL,etRegEmail.getText().toString());
 
+
                                         usersdb.collection("usersdb").document(mAuth.getCurrentUser().getUid()).set(user);
 
                                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
