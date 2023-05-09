@@ -33,19 +33,9 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new MapFragment());
                     return true;
                 }
-                else if (item.getItemId() == R.id.nav_scooter) {
-                    // Handle click on "Scooter" item
-                    replaceFragment(new ScooterFragment());
-                    return true;
-                }
                 else if (item.getItemId() == R.id.nav_scan) {
                     // Handle click on "Scan" item
                     replaceFragment(new ScanFragment());
-                    return true;
-                }
-                else if (item.getItemId() == R.id.nav_profile) {
-                    // Handle click on "Profile" item
-                    replaceFragment(new ProfileFragment());
                     return true;
                 }
                 else if (item.getItemId() == R.id.nav_settings) {
@@ -63,9 +53,4 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.nav_frame_layout, fragment)
                 .commit();
     }
-
-
-
-
-
 }

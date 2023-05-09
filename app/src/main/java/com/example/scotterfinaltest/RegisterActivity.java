@@ -3,6 +3,7 @@ package com.example.scotterfinaltest;
 import android.content.Intent;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.ktx.Firebase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -33,8 +38,13 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     FirebaseAuth mAuth;
 
-    FirebaseDatabase usersdb;
-    DatabaseReference myRef;
+    private static final String KEY_FULLNAME = "fullName";
+    private static final String KEY_MOBILE = "mobile";
+    private static final String KEY_EMAIL = "emial";
+
+    FirebaseFirestore usersdb = FirebaseFirestore.getInstance();
+
+
 
 
     @Override
@@ -49,10 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
         tvLoginHere = findViewById(R.id.tvLoginHere);
         btnRegister = findViewById(R.id.btnRegister);
         mAuth = FirebaseAuth.getInstance();
-
-
-        usersdb = FirebaseDatabase.getInstance();
-        myRef = usersdb.getReference();
 
 
 
@@ -76,6 +82,9 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task)
                             {
+
+                                if (etRegFullName.getText().toString() != null
+                                        && etRegMobile.getText().toString() != null){
                                     if(task.isSuccessful())
                                     {
                                         // Sign in success, update UI with the signed-in user's information
@@ -83,17 +92,27 @@ public class RegisterActivity extends AppCompatActivity {
 //                                    if(user != null)
 //                                        Toast.makeText(RegisterActivity.this,"Authentication Succeeded",Toast.LENGTH_SHORT).show();
 
-                                        User user = new User(etRegFullName.getText().toString(), etRegMobile.getText().toString() , etRegEmail.getText().toString(), etRegPassword.getText().toString());
+                                        Map<String , Object> userMap= new HashMap<>();
+                                        User user = new User(etRegFullName.getText().toString(), etRegMobile.getText().toString() , etRegEmail.getText().toString());
+
+                                        userMap.put(KEY_FULLNAME,etRegFullName.getText().toString());
+                                        userMap.put(KEY_MOBILE,etRegMobile.getText().toString());
+                                        userMap.put(KEY_EMAIL,etRegEmail.getText().toString());
+
+                                        usersdb.collection("usersdb").document(mAuth.getCurrentUser().getUid()).set(user);
+
                                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                         intent.putExtra("user", user);
                                         startActivity(intent);
                                         finish();
 
                                     }
+
                                     else
                                     {
                                         Toast.makeText(RegisterActivity.this,"Authentication Failed",Toast.LENGTH_SHORT).show();
                                     }
+                                }
                             }
                         });
             }

@@ -6,13 +6,11 @@ public class User implements Serializable {
     String fullName;
     String mobile;
     String email;
-    String password;
 
-    public User(String fullName, String mobile, String email, String password){
+    public User(String fullName, String mobile, String email){
         this.fullName = fullName;
         this.mobile = mobile;
         this.email = email;
-        this.password = password;
     }
 
     public String getFullName() {
@@ -29,14 +27,6 @@ public class User implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
