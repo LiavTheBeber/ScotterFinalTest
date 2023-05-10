@@ -25,13 +25,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAYYYqCg72gIMee-c-S1ftOM8y64hbk3jA" />
-
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
         <activity
             android:name=".AuthenticationActivity"
             android:exported="false" />

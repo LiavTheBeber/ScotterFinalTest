@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavView = findViewById(R.id.bottomNavigationView);
         settingsFragment = new SettingsFragment();
 
+        replaceFragment(new MapFragment());
+
 
         bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

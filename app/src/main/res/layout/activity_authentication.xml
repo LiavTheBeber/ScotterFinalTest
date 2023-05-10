@@ -8,52 +8,58 @@
     android:paddingTop="25dp"
     tools:context=".AuthenticationActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/scotterapplogo2"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Authentication Page"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="16dp" />
 
     <View
-        android:layout_marginTop="25dp"
         android:layout_width="wrap_content"
         android:layout_height="3dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="10dp" />
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Sign Up"
-        android:textSize="32dp"
-        android:layout_gravity="center"
-        />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Sign In"
-        android:textSize="32dp"
-        android:layout_gravity="center"
-        />
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Register"
+            android:textSize="32dp" />
+
+        <Button
+            android:id="@+id/btnSignIn"
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Login"
+            android:textSize="32dp" />
+
+    </LinearLayout>
 
     <View
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="3dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
-    <ProgressBar
-        android:id="@+id/loadingbar"
-        android:visibility="invisible"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"/>
+
+
+    <FrameLayout
+        android:id="@+id/auth_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 
 </LinearLayout>
