@@ -1,6 +1,7 @@
 package com.example.scotterfinaltest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ public class SettingsFragment extends Fragment
     FirebaseFirestore usersdb;
     String userId;
     DocumentReference docRef;
+    Button btnLogOut;
     CheckBox checkBox;
     boolean isDarkMode;
     public boolean restarted = false;
@@ -58,6 +61,7 @@ public class SettingsFragment extends Fragment
         tvEmail = view.findViewById(R.id.tvEmail);
         tvMobile = view.findViewById(R.id.tvMobile);
         tvDate = view.findViewById(R.id.tvDate);
+        btnLogOut = view.findViewById(R.id.btnLogOut);
         checkBox = view.findViewById(R.id.checkBox);
         usersdb = FirebaseFirestore.getInstance();
         prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -82,10 +86,22 @@ public class SettingsFragment extends Fragment
                     tvName.setText("Name: " + (documentSnapshot.getString("fullName")));
                     tvEmail.setText("Email: " + (documentSnapshot.getString("email")));
                     tvMobile.setText("Mobile: " + (documentSnapshot.getString("mobile")));
-                    tvDate.setText("Birthdate: " + (documentSnapshot.getString("mobile")));
+                    tvDate.setText("Birthdate: " + (documentSnapshot.getTimestamp("birthdate")));
                 }
             }
         });
+
+
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                signOutUser();
+            }
+        });
+
+
+
 
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -108,5 +124,12 @@ public class SettingsFragment extends Fragment
 
             }
         });
+    }
+
+    private void signOutUser()
+    {
+        Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

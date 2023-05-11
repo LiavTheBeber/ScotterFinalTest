@@ -40,8 +40,8 @@
                     android:id="@+id/etRegDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Birthdate"
-                    android:inputType="time|date" />
+                    android:hint="Birthdate (dd-MM-yyyy)"
+                    android:inputType="date"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

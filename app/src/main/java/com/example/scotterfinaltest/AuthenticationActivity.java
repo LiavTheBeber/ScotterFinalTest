@@ -23,6 +23,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnSignUp);
         btnSignIn = findViewById(R.id.btnSignIn);
 
+        replaceFragment(new RegisterFragment());
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

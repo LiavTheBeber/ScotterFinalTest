@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,8 +35,9 @@ public class RegisterFragment extends Fragment {
     TextInputEditText etRegPassword;
     Button btnSignUpSubmit;
     FirebaseAuth mAuth;
-    Date date = null;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+
 
     private static final String KEY_FULLNAME = "fullName";
     private static final String KEY_MOBILE = "mobile";
@@ -63,6 +64,7 @@ public class RegisterFragment extends Fragment {
         etRegEmail = view.findViewById(R.id.etRegEmail);
         etRegPassword = view.findViewById(R.id.etRegPass);
         btnSignUpSubmit = view.findViewById(R.id.btnSignUpSubmit);
+
         mAuth = FirebaseAuth.getInstance();
 
         return view;
@@ -77,50 +79,49 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                String dateString = etRegDate.getText().toString();
+
+                Date birthdate = null;
+                try {
+                    birthdate = dateFormat.parse(dateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                Date finalBirthdate = birthdate;
                 mAuth.createUserWithEmailAndPassword(etRegEmail.getText().toString(), etRegPassword.getText().toString())
                         .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task)
-                            {
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                if (etRegFullName.getText().toString() != null
-                                        && etRegMobile.getText().toString() != null &&
-                                etRegDate.getText().toString() != null){
+                                if (etRegFullName.getText() != null && etRegMobile.getText() != null && etRegDate.getText() != null) {
 
-
-                                    if(task.isSuccessful())
-                                    {
-
-                                        try {
-                                            date = dateFormat.parse(date)
-                                        }
-
-
-
+                                    if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-//                                    FirebaseUser user = mAuth.getCurrentUser();
-//                                    if(user != null)
-//                                        Toast.makeText(RegisterActivity.this,"Authentication Succeeded",Toast.LENGTH_SHORT).show();
-
-                                        Map<String , Object> userMap= new HashMap<>();
-                                        User user = new User(etRegFullName.getText().toString(), etRegMobile.getText().toString() , etRegDate.getText().toString() ,etRegEmail.getText().toString());
-
-                                        userMap.put(KEY_FULLNAME,etRegFullName.getText().toString());
-                                        userMap.put(KEY_MOBILE,etRegMobile.getText().toString());
-                                        userMap.put(KEY_EMAIL,etRegEmail.getText().toString());
 
 
-                                        usersdb.collection("usersdb").document(mAuth.getCurrentUser().getUid()).set(user);
+                                        User user = new User(etRegFullName.getText().toString(), etRegMobile.getText().toString(), finalBirthdate, etRegEmail.getText().toString());
+
+                                        // Save the user or perform any other operations
+
+                                        Map<String, Object> userMap = new HashMap<>();
+                                        userMap.put(KEY_FULLNAME, user.getFullName());
+                                        userMap.put(KEY_MOBILE, user.getMobile());
+                                        userMap.put(KEY_BIRTHDATE, user.getBirthdate());
+                                        userMap.put(KEY_EMAIL, user.getEmail());
+
+                                        usersdb.collection("usersdb").document(mAuth.getCurrentUser().getUid()).set(userMap);
 
                                         Intent intent = new Intent(requireContext(), MainActivity.class);
                                         intent.putExtra("user", user);
                                         startActivity(intent);
+                                        getActivity().finish();
 
                                     }
-
                                     else
                                     {
-                                        Toast.makeText(requireContext(),"Authentication Failed",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(requireContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }

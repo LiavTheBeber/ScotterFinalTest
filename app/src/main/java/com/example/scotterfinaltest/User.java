@@ -5,14 +5,15 @@ import java.util.Date;
 
 public class User implements Serializable {
 
-    String fullName;
-    String mobile;
-    String email;
-    Date Date;
+    private String fullName;
+    private String mobile;
+    private String email;
+    private Date birthdate;
 
-    public User(String fullName, String mobile, Date Date , String email){
+    public User(String fullName, String mobile, Date birthdate, String email) {
         this.fullName = fullName;
         this.mobile = mobile;
+        this.birthdate = birthdate;
         this.email = email;
     }
 
@@ -32,12 +33,12 @@ public class User implements Serializable {
         this.mobile = mobile;
     }
 
-    public Date getDate() {
-        return Date;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
-    public void setDate(Date date) {
-        Date = date;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getEmail() {
@@ -47,5 +48,4 @@ public class User implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

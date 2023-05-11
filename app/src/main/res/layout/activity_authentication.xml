@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Register"
-            android:textSize="32dp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/btnSignIn"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Login"
-            android:textSize="32dp" />
+            android:textSize="20dp" />
 
     </LinearLayout>
 
