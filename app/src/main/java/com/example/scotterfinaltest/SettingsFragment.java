@@ -86,7 +86,7 @@ public class SettingsFragment extends Fragment
                     tvName.setText("Name: " + (documentSnapshot.getString("fullName")));
                     tvEmail.setText("Email: " + (documentSnapshot.getString("email")));
                     tvMobile.setText("Mobile: " + (documentSnapshot.getString("mobile")));
-                    tvDate.setText("Birthdate: " + (documentSnapshot.getTimestamp("birthdate")));
+                    tvDate.setText("Birthdate: " + (documentSnapshot.getDate("birthdate")));
                 }
             }
         });

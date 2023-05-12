@@ -27,10 +27,15 @@
             android:value="AIzaSyAYYYqCg72gIMee-c-S1ftOM8y64hbk3jA" />
         <activity
             android:name=".AuthenticationActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"/>
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true">

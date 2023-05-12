@@ -62,10 +62,6 @@ public class MapFragment extends Fragment {
                 }
                 mMap.setMyLocationEnabled(true);
             }
-
-
-            //LatLng sydney = new LatLng(-34, 151);
-            //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         }
     };
 
@@ -78,65 +74,62 @@ public class MapFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getLocationPermission();
-        initMap();
-
-
     }
 
-    private void getLocationPermission()
-    {
+    private void getLocationPermission() {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        if (ContextCompat.checkSelfPermission(requireContext(),FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {
-            if (ContextCompat.checkSelfPermission(requireContext(),COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-            {
+        if (ContextCompat.checkSelfPermission(requireContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(requireContext(), COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
                 initMap();
             }
-        }
-
-        else {
+        } else {
             requestPermissionLauncher.launch(permissions);
         }
     }
 
-
-    private void getDeviceLocation()
-    {
+    private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         try {
-            if (mLocationPermissionGranted){
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        Location currentLocation = (Location) task.getResult();
-                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),DEFAULT_ZOOM);
+            if (mLocationPermissionGranted) {
+                Task<Location> locationTask = mFusedLocationProviderClient.getLastLocation();
+                locationTask.addOnCompleteListener(requireActivity(), new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            Location currentLocation = task.getResult();
+                            if (currentLocation != null) {
+                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            } else {
+                                // Handle case when location is null
+                            }
+                        } else {
+                            // Handle unsuccessful task
+                            Log.e(TAG, "getLastLocation: Exception: " + task.getException());
+                        }
                     }
                 });
             }
 
-        }catch (SecurityException e){
-            Log.e(TAG,"getDeviceLocation: SecurityException: " + e.getMessage());
-        }
-
-    }
-
-    private void moveCamera(LatLng latLng, float zoom){
-        if (mMap != null){
-            mMap.moveCamera((CameraUpdateFactory.newLatLngZoom(latLng,zoom)));
+        } catch (SecurityException e) {
+            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
         }
     }
 
-    private void initMap(){
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+    private void moveCamera(LatLng latLng, float zoom) {
+        if (mMap != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        }
+    }
+
+    private void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
@@ -144,19 +137,22 @@ public class MapFragment extends Fragment {
 
     private final ActivityResultLauncher<String[]> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-                    isGranted -> {
-                        boolean allGranted = true;
-                        for (Boolean granted : isGranted.values()) {
-                            if (!granted) {
-                                mLocationPermissionGranted = false;
-                                allGranted = false;
-                                break;
+                    new ActivityResultCallback<Map<String, Boolean>>() {
+                        @Override
+                        public void onActivityResult(Map<String, Boolean> isGranted) {
+                            boolean allGranted = true;
+                            for (Boolean granted : isGranted.values()) {
+                                if (!granted) {
+                                    mLocationPermissionGranted = false;
+                                    allGranted = false;
+                                    break;
+                                }
                             }
-                        }
-                        if (allGranted) {
-                            // Permissions are granted, do something here
-                            mLocationPermissionGranted = true;
-                            initMap();
+                            if (allGranted) {
+                                // Permissions are granted, do something here
+                                mLocationPermissionGranted = true;
+                                initMap();
+                            }
                         }
                     });
 }

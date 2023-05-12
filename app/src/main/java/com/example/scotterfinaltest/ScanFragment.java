@@ -84,7 +84,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
         }
 
         try {
-            cameraManager.setTorchMode(cameraId, true);
+            cameraManager.setTorchMode(cameraId, false);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }

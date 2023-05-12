@@ -42,7 +42,7 @@ public class RegisterFragment extends Fragment {
     private static final String KEY_FULLNAME = "fullName";
     private static final String KEY_MOBILE = "mobile";
     private static final String KEY_BIRTHDATE = "birthdate";
-    private static final String KEY_EMAIL = "emial";
+    private static final String KEY_EMAIL = "email";
 
     FirebaseFirestore usersdb = FirebaseFirestore.getInstance();
 
