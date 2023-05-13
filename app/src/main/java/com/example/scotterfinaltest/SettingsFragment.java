@@ -24,12 +24,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.security.Key;
-import java.util.HashMap;
-import java.util.Map;
 
-public class SettingsFragment extends Fragment
-{
+public class SettingsFragment extends Fragment {
     FirebaseAuth mAuth;
     TextView tvName;
     TextView tvEmail;
@@ -41,13 +37,12 @@ public class SettingsFragment extends Fragment
     Button btnLogOut;
     CheckBox checkBox;
     boolean isDarkMode;
-    public boolean restarted = false;
     SharedPreferences prefs;
     private static final String DARK_MODE_PREF = "dark_mode_pref";
+    //public String currentFragmentTag;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
@@ -65,12 +60,12 @@ public class SettingsFragment extends Fragment
         checkBox = view.findViewById(R.id.checkBox);
         usersdb = FirebaseFirestore.getInstance();
         prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        //currentFragmentTag = getArguments().getString("CURRENT_FRAGMENT_TAG", "");
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         isDarkMode = prefs.getBoolean(DARK_MODE_PREF, false);
@@ -79,15 +74,12 @@ public class SettingsFragment extends Fragment
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         docRef = usersdb.collection("usersdb").document(userId);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    tvName.setText("Name: " + (documentSnapshot.getString("fullName")));
-                    tvEmail.setText("Email: " + (documentSnapshot.getString("email")));
-                    tvMobile.setText("Mobile: " + (documentSnapshot.getString("mobile")));
-                    tvDate.setText("Birthdate: " + (documentSnapshot.getDate("birthdate")));
-                }
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                tvName.setText("Name: " + (documentSnapshot.getString("fullName")));
+                tvEmail.setText("Email: " + (documentSnapshot.getString("email")));
+                tvMobile.setText("Mobile: " + (documentSnapshot.getString("mobile")));
+                tvDate.setText("Birthdate: " + (documentSnapshot.getDate("birthdate")));
             }
         });
 
@@ -96,20 +88,22 @@ public class SettingsFragment extends Fragment
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                signOutUser();
+                Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
 
-
-
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // Save the checkbox state to the shared preferences
                 prefs.edit().putBoolean(DARK_MODE_PREF, isChecked).apply();
-                restarted = true;
+
+                // Set the current fragment tag to "settings"
+                //currentFragmentTag = "settings";
 
                 // Call the setTheme() method to enable or disable dark mode
                 if (isChecked) {
@@ -119,17 +113,9 @@ public class SettingsFragment extends Fragment
                 }
 
                 // Recreate the activity to apply the new theme
-                restarted = true;
                 requireActivity().recreate();
-
             }
         });
-    }
 
-    private void signOutUser()
-    {
-        Intent intent = new Intent(requireContext(), AuthenticationActivity.class);
-        startActivity(intent);
-        getActivity().finish();
     }
 }

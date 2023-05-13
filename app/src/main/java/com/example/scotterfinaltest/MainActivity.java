@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.scotterfinaltest.SettingsFragment;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,8 +16,15 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavView;
-    private SettingsFragment settingsFragment;
+    BottomNavigationView bottomNavView;
+
+    //private MenuItem itemId;
+    private MenuItem itemId;
+
+    private String currentFragmentTag;
+    private static final String TAG_MAP_FRAGMENT = "MAP_FRAGMENT";
+    private static final String TAG_SCAN_FRAGMENT = "SCAN_FRAGMENT";
+    private static final String TAG_SETTINGS_FRAGMENT = "SETTINGS_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavView = findViewById(R.id.bottomNavigationView);
-        settingsFragment = new SettingsFragment();
+
+        itemId = bottomNavView.getMenu().findItem(bottomNavView.getSelectedItemId());
 
         replaceFragment(new MapFragment());
-
 
         bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -57,4 +66,5 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.nav_frame_layout, fragment)
                 .commit();
     }
+
 }
