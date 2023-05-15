@@ -38,6 +38,7 @@ android {
 dependencies {
 
 
+    implementation ("com.caverock:androidsvg:1.4")
     implementation("com.google.zxing:core:3.4.0")
     implementation("com.journeyapps:zxing-android-embedded:4.2.0")
     implementation("com.google.firebase:firebase-bom:32.0.0")
