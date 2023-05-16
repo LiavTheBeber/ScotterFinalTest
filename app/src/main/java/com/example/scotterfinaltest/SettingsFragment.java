@@ -60,16 +60,14 @@ public class SettingsFragment extends Fragment {
         checkBox = view.findViewById(R.id.checkBox);
         usersdb = FirebaseFirestore.getInstance();
         prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
-        //currentFragmentTag = getArguments().getString("CURRENT_FRAGMENT_TAG", "");
+        isDarkMode = prefs.getBoolean(DARK_MODE_PREF, false);
+        checkBox.setChecked(isDarkMode);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        isDarkMode = prefs.getBoolean(DARK_MODE_PREF, false);
-        checkBox.setChecked(isDarkMode);
 
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

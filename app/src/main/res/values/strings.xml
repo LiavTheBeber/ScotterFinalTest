@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="google_maps_api_key">AIzaSyAYYYqCg72gIMee-c-S1ftOM8y64hbk3jA</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="default_scooter_snippet">Cost: 5₪ For Start, 1₪ Per Minute \nEnjoy Your Ride!!"</string>
 </resources>

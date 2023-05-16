@@ -37,6 +37,7 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -54,7 +55,7 @@ public class MapFragment extends Fragment
     private Boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private static final float DEFAULT_ZOOM = 12f;
+    private static final float DEFAULT_ZOOM = 15f;
     UiModeManager uiModeManager;
     boolean isNightMode;
 
@@ -63,82 +64,82 @@ public class MapFragment extends Fragment
 
     private OnMapReadyCallback callback = new OnMapReadyCallback()
     {
-
         @Override
-        public void onMapReady(GoogleMap googleMap)
-        {
+        public void onMapReady(GoogleMap googleMap) {
 
             mMap = googleMap;
 
-            if (mLocationPermissionGranted)
-            {
+            if (mLocationPermissionGranted) {
                 getDeviceLocation();
 
                 if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED)
-                {
+                        != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-
                 mMap.setMyLocationEnabled(true);
 
-                // Create a custom marker
-                LatLng markerPosition = new LatLng(31.687312, 34.582416);
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(markerPosition)
-                        .title("Marker Title")
-                        .snippet("Marker Description");
 
-                // Load marker icon as a Bitmap
-                Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.scootermarkerresized);
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
-
-                // Add the marker to the map
-                mMap.addMarker(markerOptions);
-
-                // Set a custom info window adapter
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter()
-                {
-                    @Nullable
-                    @Override
-                    public View getInfoContents(@NonNull Marker marker) {
-                        View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_window, null);
-
-                        // Customize the views in the info window layout
-                        ImageView imageView = infoWindow.findViewById(R.id.imageViewIcon);
-                        TextView titleTextView = infoWindow.findViewById(R.id.textViewTitle);
-                        TextView descriptionTextView = infoWindow.findViewById(R.id.textViewDescription);
-
-                        // Set the image, title, and description
-                        imageView.setImageBitmap(markerIcon);
-                        titleTextView.setText(marker.getTitle());
-                        descriptionTextView.setText(marker.getSnippet());
-
-                        return infoWindow;
-                    }
-
-                    @Override
-                    public View getInfoWindow(Marker marker)
-                    {
-                        return null; // Return null to use default info window
-                    }
-                });
-
-                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
-                {
-                    @Override
-                    public void onInfoWindowClick(@NonNull Marker marker) {
-                        // Handle info window click event
-                        showDialogWithInfoWindowData(marker);
-                    }
-                });
-
-                }
+                addCustomMarker(new LatLng(31.687312, 34.582416) , "Scooter No.1", "Cost: 5₪ For Start, 1₪ Per Minute \nEnjoy Your Ride!!");
+                addCustomMarker(new LatLng(31.688528, 34.582913) , "Scooter No.2", "Cost: 5₪ For Start, 1₪ Per Minute \nEnjoy Your Ride!!");
             }
-        };
+        }
+    };
 
 
+
+    private void addCustomMarker(LatLng position, String title, String snippet) {
+        // Create a marker options object
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(position)
+                .title(title)
+                .snippet(snippet);
+
+        // Load marker icon as a Bitmap
+        Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.scootermarkerresized);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
+
+        // Add the marker to the map
+        mMap.addMarker(markerOptions);
+
+
+
+
+        // Set a custom info window adapter
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Nullable
+            @Override
+            public View getInfoContents(@NonNull Marker marker) {
+                View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+
+                // Customize the views in the info window layout
+                TextView titleTextView = infoWindow.findViewById(R.id.textViewTitle);
+                TextView descriptionTextView = infoWindow.findViewById(R.id.textViewDescription);
+
+                // Set the title, and description
+                titleTextView.setText(marker.getTitle());
+                descriptionTextView.setText(marker.getSnippet());
+
+                return infoWindow;
+            }
+
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null; // Return null to use default info window
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(@NonNull Marker marker) {
+
+                moveCamera(new LatLng(position.latitude , position.longitude), DEFAULT_ZOOM);
+
+                // Handle info window click event
+                showDialogWithInfoWindowData(marker);
+            }
+        });
+    }
 
     private void showDialogWithInfoWindowData(Marker marker)
     {
@@ -228,6 +229,17 @@ public class MapFragment extends Fragment
 
         } catch (SecurityException e) {
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
+        }
+    }
+
+    private void moveCameraAnimated(LatLng latLng, float zoom) {
+        if (mMap != null) {
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(latLng)
+                    .zoom(zoom)
+                    .build();
+
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
     }
 

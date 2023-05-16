@@ -4,11 +4,6 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/imageViewIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/scootermarkerresized" />
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -23,7 +18,7 @@
         android:id="@+id/textViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Marker Description"
+        android:text="@string/default_scooter_snippet"
         android:textSize="14sp"
         android:textColor="#666666"
         android:layout_marginTop="4dp" />

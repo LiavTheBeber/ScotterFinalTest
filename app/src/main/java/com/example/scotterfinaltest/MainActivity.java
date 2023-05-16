@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavView = findViewById(R.id.bottomNavigationView);
 
-        itemId = bottomNavView.getMenu().findItem(bottomNavView.getSelectedItemId());
-
         replaceFragment(new MapFragment());
 
         bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
