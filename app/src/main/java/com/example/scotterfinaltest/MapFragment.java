@@ -258,22 +258,19 @@ public class MapFragment extends Fragment
 
     private final ActivityResultLauncher<String[]> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-                    new ActivityResultCallback<Map<String, Boolean>>() {
-                        @Override
-                        public void onActivityResult(Map<String, Boolean> isGranted) {
-                            boolean allGranted = true;
-                            for (Boolean granted : isGranted.values()) {
-                                if (!granted) {
-                                    mLocationPermissionGranted = false;
-                                    allGranted = false;
-                                    break;
-                                }
+                    isGranted -> {
+                        boolean allGranted = true;
+                        for (Boolean granted : isGranted.values()) {
+                            if (!granted) {
+                                mLocationPermissionGranted = false;
+                                allGranted = false;
+                                break;
                             }
-                            if (allGranted) {
-                                // Permissions are granted, do something here
-                                mLocationPermissionGranted = true;
-                                initMap();
-                            }
+                        }
+                        if (allGranted) {
+                            // Permissions are granted, do something here
+                            mLocationPermissionGranted = true;
+                            initMap();
                         }
                     });
 }
