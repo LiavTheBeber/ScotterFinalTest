@@ -15,17 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
-
+    ScanFragment scanFragment = (ScanFragment) getSupportFragmentManager().findFragmentById(R.id.nav_frame_layout);
     BottomNavigationView bottomNavView;
-
-    //private MenuItem itemId;
-    private MenuItem itemId;
-
-    private String currentFragmentTag;
-    private static final String TAG_MAP_FRAGMENT = "MAP_FRAGMENT";
-    private static final String TAG_SCAN_FRAGMENT = "SCAN_FRAGMENT";
-    private static final String TAG_SETTINGS_FRAGMENT = "SETTINGS_FRAGMENT";
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -35,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavView = findViewById(R.id.bottomNavigationView);
 
         replaceFragment(new MapFragment());
+
+
 
         bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -46,7 +39,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (item.getItemId() == R.id.nav_scan) {
                     // Handle click on "Scan" item
-                    replaceFragment(new ScanFragment());
+                    if (scanFragment != null && scanFragment.isListing())
+                    {
+                        replaceFragment(new ScooterListingFragment());
+                    }
+                    else {
+                        replaceFragment(new ScanFragment());
+                    }
+
                     return true;
                 }
                 else if (item.getItemId() == R.id.nav_settings) {

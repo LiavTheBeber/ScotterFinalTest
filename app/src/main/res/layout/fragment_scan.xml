@@ -2,25 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scan_fragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+    <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/cameraView"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_centerInParent="true" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/flashButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cameraView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/baseline_flashlight_on_24"
-        app:fabSize="auto"
-        />
-
-
-
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

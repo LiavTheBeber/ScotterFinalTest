@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.scotterfinaltest"
-        minSdk = 25
+        minSdk = 21
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -35,12 +35,11 @@ android {
     }
 }
 
+
 dependencies {
 
 
     implementation("com.caverock:androidsvg:1.4")
-    implementation("com.google.zxing:core:3.4.0")
-    implementation("com.journeyapps:zxing-android-embedded:4.2.0")
     implementation("com.google.firebase:firebase-bom:32.0.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
@@ -54,4 +53,5 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.github.yuriy-budiyev:code-scanner:2.3.2")
 }

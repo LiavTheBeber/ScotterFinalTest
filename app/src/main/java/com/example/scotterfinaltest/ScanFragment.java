@@ -2,11 +2,9 @@ package com.example.scotterfinaltest;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,29 +18,36 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.journeyapps.barcodescanner.camera.CameraManager;
+import com.budiyev.android.codescanner.CodeScanner;
+import com.budiyev.android.codescanner.CodeScannerView;
+import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.zxing.Result;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ScanFragment extends Fragment {
 
-    private FloatingActionButton btnFlash;
-    private static final String TAG = ScanFragment.class.getSimpleName();
+    Boolean isListing = false;
+    Boolean isActivatedCheck = false;
+    FirebaseFirestore scootersdb;
+    DocumentReference docRef;
+    private String qrStringResult;
+    private CodeScanner mCodeScanner;
+    private CodeScannerView scannerView;
     private boolean mCameraPermissionGranted = false;
     private static final int REQUEST_CAMERA_PERMISSION = 100;
     private AlertDialog mDialog;
-    private CameraManager mCameraManager;
-    private DecoratedBarcodeView mBarcodeView;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
-        mBarcodeView = view.findViewById(R.id.cameraView);
-        btnFlash = view.findViewById(R.id.flashButton);
-        mCameraManager = new CameraManager(requireContext());
+        scannerView = view.findViewById(R.id.cameraView);
+        mCodeScanner = new CodeScanner(requireActivity(),scannerView);
+        scootersdb = FirebaseFirestore.getInstance();
         return view;
     }
 
@@ -52,26 +57,66 @@ public class ScanFragment extends Fragment {
 
         getCameraPermission();
 
-        btnFlash.setOnClickListener(new View.OnClickListener() {
+        scanQr();
+
+        scannerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFlashlightOn())
-                    turnOnFlashlight();
-                else
-                    turnOffFlashlight();
+                // refresh scanner
+                mCodeScanner.startPreview();
             }
         });
+    }
 
 
 
+    private void scanQr()
+    {
+        mCodeScanner.setDecodeCallback(new DecodeCallback() {
+            @Override
+            public void onDecoded(@NonNull Result result) {
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        // code scanned successfully
+                        qrStringResult = result.getText().toString();
+                        docRef = scootersdb.collection("Scootersdb").document(qrStringResult);
+                        Map<String, Object> updates = new HashMap<>();
 
+                        docRef.get().addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                isActivatedCheck = documentSnapshot.getBoolean("IsActivated");
+                                isListing = isActivatedCheck;
+                                if (isActivatedCheck) {
+                                    // Scooter Is Activated, handle the case accordingly
+                                    showScooterDeniedDialog("Scooter Is Being Used By Someone Else");
+                                }
+                                else {
+                                    // Scooter Isn't Activated
+                                    updates.put("IsActivated", true);
+                                    docRef.update(updates);
+                                    Scooter scooter = new Scooter(documentSnapshot.getString("Name"),documentSnapshot.getString("qrCode"),
+                                            true);
+                                    navigateToScooterListingFragment();
+                                }
+                            }
+                            else {
+                                // Document doesn't exist, handle the case accordingly
+                                mCodeScanner.startPreview();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     private void getCameraPermission() {
         String CAMERA_PERMISSION = Manifest.permission.CAMERA;
         if (ContextCompat.checkSelfPermission(requireContext(), CAMERA_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
             mCameraPermissionGranted = true;
-            // Initialize Camera
+            mCodeScanner.startPreview();
         } else {
             requestPermissionLauncher.launch(CAMERA_PERMISSION);
         }
@@ -82,16 +127,17 @@ public class ScanFragment extends Fragment {
                     isGranted -> {
                         if (isGranted) {
                             mCameraPermissionGranted = true;
-                            // Initialize Camera
+                            mCodeScanner.startPreview();
                         } else {
                             // Camera permission denied, handle accordingly
+                            showPermissionDeniedDialog("Camera Access Denied");
                         }
                     });
 
 
-    private void showPermissionDeniedDialog() {
+    private void showPermissionDeniedDialog(String dialogMessage) {
         mDialog = new AlertDialog.Builder(requireContext())
-                .setMessage("Camera permission denied")
+                .setMessage(dialogMessage)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -103,35 +149,25 @@ public class ScanFragment extends Fragment {
         mDialog.show();
     }
 
-    private boolean isFlashlightOn()
-    {
-        return mCameraManager.isTorchOn();
-    }
 
-    private void turnOnFlashlight()
-    {
-        try {
-            mCameraManager.setTorch(true);
-        }
-        catch (Exception e){
-            Log.e(TAG,"torch set enable failed");
-        }
-    }
-
-    private void turnOffFlashlight()
-    {
-        try {
-            mCameraManager.setTorch(false);
-        }
-        catch (Exception e){
-            Log.e(TAG,"torch set disable failed");
-        }
+    private void showScooterDeniedDialog(String dialogMessage) {
+        mDialog = new AlertDialog.Builder(requireContext())
+                .setMessage(dialogMessage)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDialog.dismiss();
+                    }
+                })
+                .create();
+        mDialog.show();
     }
 
 
 
     private void navigateToScooterListingFragment() {
         // Create an instance of the DestinationFragment
+
         ScooterListingFragment scooterListingFragment = new ScooterListingFragment();
 
         // Get the parent activity's fragment manager
@@ -142,4 +178,21 @@ public class ScanFragment extends Fragment {
                 .replace(getId(), scooterListingFragment) // Use the ID of the current fragment container
                 .commit();
     }
+
+    public boolean isListing(){
+        return isListing;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mCodeScanner.startPreview();
+    }
+
+    @Override
+    public void onPause(){
+        mCodeScanner.releaseResources();
+        super.onPause();
+    }
+
 }
