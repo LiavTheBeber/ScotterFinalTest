@@ -98,7 +98,7 @@ public class ScanFragment extends Fragment {
                                     docRef.update(updates);
                                     Scooter scooter = new Scooter(documentSnapshot.getString("Name"),documentSnapshot.getString("qrCode"),
                                             true);
-                                    navigateToScooterListingFragment();
+                                    navigateToScooterListingFragment(scooter);
                                 }
                             }
                             else {
@@ -165,17 +165,17 @@ public class ScanFragment extends Fragment {
 
 
 
-    private void navigateToScooterListingFragment() {
-        // Create an instance of the DestinationFragment
-
+    private void navigateToScooterListingFragment(Scooter scooter) {
         ScooterListingFragment scooterListingFragment = new ScooterListingFragment();
 
-        // Get the parent activity's fragment manager
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        // Pass the scooter object as an argument to the destination fragment
+        Bundle args = new Bundle();
+        args.putParcelable("scooter", scooter);
+        scooterListingFragment.setArguments(args);
 
-        // Perform the fragment transaction to replace the current fragment with the DestinationFragment
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(getId(), scooterListingFragment) // Use the ID of the current fragment container
+                .replace(getId(), scooterListingFragment)
                 .commit();
     }
 

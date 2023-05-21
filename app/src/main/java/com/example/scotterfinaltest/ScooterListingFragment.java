@@ -24,6 +24,7 @@ public class ScooterListingFragment extends Fragment {
     FirebaseFirestore scootersdb;
     DocumentReference docRef;
     TextView tvScooterName;
+    Scooter scooter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,12 @@ public class ScooterListingFragment extends Fragment {
         btnQuitUsing = view.findViewById(R.id.btnQuitUsing);
         tvScooterName = view.findViewById(R.id.tvScooterName);
         scootersdb = FirebaseFirestore.getInstance();
+
+        // Retrieve the scooter object from the arguments
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("scooter")) {
+            scooter = args.getParcelable("scooter");
+        }
         return view;
     }
 
@@ -47,14 +54,9 @@ public class ScooterListingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Map<String, Object> updates = new HashMap<>();
+        tvScooterName.setText(scooter.getName());
 
-        docRef = scootersdb.collection("Scootersdb").document();
-        docRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                tvScooterName.setText(documentSnapshot.getString("name"));
-            }
-        });
-
+        docRef = scootersdb.collection("Scootersdb").document(scooter.getQrCode());
 
         btnQuitUsing.setOnClickListener(new View.OnClickListener() {
             @Override
