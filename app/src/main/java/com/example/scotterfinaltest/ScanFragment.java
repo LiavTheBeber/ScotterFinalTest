@@ -1,8 +1,11 @@
 package com.example.scotterfinaltest;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +43,8 @@ public class ScanFragment extends Fragment {
     private CodeScannerView scannerView;
     private boolean mCameraPermissionGranted = false;
     private static final int REQUEST_CAMERA_PERMISSION = 100;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor myEdit;
     private AlertDialog mDialog;
 
     @Override
@@ -48,6 +53,8 @@ public class ScanFragment extends Fragment {
         scannerView = view.findViewById(R.id.cameraView);
         mCodeScanner = new CodeScanner(requireActivity(),scannerView);
         scootersdb = FirebaseFirestore.getInstance();
+        sharedPreferences = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        myEdit = sharedPreferences.edit();
         return view;
     }
 
@@ -87,14 +94,17 @@ public class ScanFragment extends Fragment {
                         docRef.get().addOnSuccessListener(documentSnapshot -> {
                             if (documentSnapshot.exists()) {
                                 isActivatedCheck = documentSnapshot.getBoolean("IsActivated");
-                                isListing = isActivatedCheck;
                                 if (isActivatedCheck) {
                                     // Scooter Is Activated, handle the case accordingly
                                     showScooterDeniedDialog("Scooter Is Being Used By Someone Else");
                                 }
                                 else {
                                     // Scooter Isn't Activated
+                                    myEdit.putString("qrCode",qrStringResult);
+                                    myEdit.putString("Name", documentSnapshot.getString("Name"));
+                                    myEdit.apply();
                                     updates.put("IsActivated", true);
+                                    isListing = true;
                                     docRef.update(updates);
                                     Scooter scooter = new Scooter(documentSnapshot.getString("Name"),documentSnapshot.getString("qrCode"),
                                             true);

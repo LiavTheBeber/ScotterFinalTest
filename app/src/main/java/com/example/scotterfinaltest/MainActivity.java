@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.scotterfinaltest.SettingsFragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,6 +18,10 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
     ScanFragment scanFragment = (ScanFragment) getSupportFragmentManager().findFragmentById(R.id.nav_frame_layout);
     BottomNavigationView bottomNavView;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor myEdit;
+    String qrCode = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -39,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (item.getItemId() == R.id.nav_scan) {
                     // Handle click on "Scan" item
-                    if (scanFragment != null && scanFragment.isListing())
+                    sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                    myEdit = sharedPreferences.edit();
+                    qrCode = sharedPreferences.getString("qrCode", "");
+                    if (!qrCode.isEmpty())
                     {
                         replaceFragment(new ScooterListingFragment());
                     }
@@ -64,5 +72,4 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.nav_frame_layout, fragment)
                 .commit();
     }
-
 }
