@@ -91,7 +91,8 @@ public class RegisterFragment extends Fragment {
 
                 Date finalBirthdate = birthdate;
                 mAuth.createUserWithEmailAndPassword(etRegEmail.getText().toString(), etRegPassword.getText().toString())
-                        .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>()
+                        {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
