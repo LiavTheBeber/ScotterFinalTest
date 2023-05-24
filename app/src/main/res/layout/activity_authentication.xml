@@ -54,8 +54,6 @@
         android:layout_height="3dp"
         android:background="@android:color/darker_gray" />
 
-
-
     <FrameLayout
         android:id="@+id/auth_frame_layout"
         android:layout_width="match_parent"

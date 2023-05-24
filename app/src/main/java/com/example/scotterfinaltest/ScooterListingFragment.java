@@ -58,6 +58,11 @@ public class ScooterListingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        NotificationUtils.showNotification(requireContext(),"ScooterFinalTest","Don't Forget Your Scooter Bill Is Still Running In Background");
+
+
+
         qrCode = sharedPreferences.getString("Name", "");
         Map<String, Object> updates = new HashMap<>();
         tvScooterName.setText(qrCode);
