@@ -37,8 +37,6 @@ public class RegisterFragment extends Fragment {
     FirebaseAuth mAuth;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-
-
     private static final String KEY_FULLNAME = "fullName";
     private static final String KEY_MOBILE = "mobile";
     private static final String KEY_BIRTHDATE = "birthdate";
@@ -129,8 +127,7 @@ public class RegisterFragment extends Fragment {
                         });
             }
         });
-
-
+        
     }
 
 }

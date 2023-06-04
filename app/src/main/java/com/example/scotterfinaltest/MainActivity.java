@@ -16,7 +16,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
-    ScanFragment scanFragment = (ScanFragment) getSupportFragmentManager().findFragmentById(R.id.nav_frame_layout);
     BottomNavigationView bottomNavView;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor myEdit;
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavView = findViewById(R.id.bottomNavigationView);
 
         replaceFragment(new MapFragment());
-
 
 
         bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {

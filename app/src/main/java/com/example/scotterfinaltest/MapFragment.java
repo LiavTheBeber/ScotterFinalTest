@@ -56,8 +56,6 @@ public class MapFragment extends Fragment
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private static final float DEFAULT_ZOOM = 15f;
-    UiModeManager uiModeManager;
-    boolean isNightMode;
 
     private GoogleMap mMap;
 
@@ -102,9 +100,6 @@ public class MapFragment extends Fragment
         // Add the marker to the map
         mMap.addMarker(markerOptions);
 
-
-
-
         // Set a custom info window adapter
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Nullable
@@ -134,7 +129,6 @@ public class MapFragment extends Fragment
             public void onInfoWindowClick(@NonNull Marker marker) {
 
                 moveCamera(new LatLng(position.latitude , position.longitude), DEFAULT_ZOOM);
-
                 // Handle info window click event
                 showDialogWithInfoWindowData(marker);
             }
